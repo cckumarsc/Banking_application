@@ -1,45 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showCredentials, setShowCredentials] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // TODO: replace with real auth logic
-    alert('Login button clicked');
+    setShowCredentials(true);
+    // reset fields when navigating to credential page
+    setUserId('');
+    setPassword('');
+  };
+
+  const handleSubmit = () => {
+    // here would normally validate credentials
+    setLoggedIn(true);
+    setShowCredentials(false);
   };
 
   return (
-    <>
-      {/* login button on main page only */}
-      <div className="login-container" style={{ textAlign: 'right', padding: '1rem' }}>
-        <button onClick={handleLogin}>Login</button>
-      </div>
+    <div className="login-container" style={{ textAlign: 'center', padding: '2rem' }}>
+      {loggedIn ? (
+        <>
+          <h2>Welcome, {userId || 'User'}!</h2>
+          <p>This is your new landing screen.</p>
+        </>
+      ) : showCredentials ? (
+        <>
+<div style={{ marginBottom: '1rem', textAlign: 'left' }}>
+      <label htmlFor="userId" style={{ display: 'block', marginBottom: '0.25rem' }}>
+        User ID
+      </label>
+      <input
+        id="userId"
+        type="text"
+        placeholder="Enter User ID"
+        value={userId}
+        onChange={(e) => setUserId(e.target.value)}
+      />
+    </div>
 
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ marginBottom: '1rem', textAlign: 'left' }}>
+      <label htmlFor="password" style={{ display: 'block', marginBottom: '0.25rem' }}>
+        Password
+      </label>
+      <input
+        id="password"
+              type="password"
+              placeholder="Enter Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button onClick={handleSubmit}>
+            Submit
+          </button>
+          <div style={{ marginTop: '1rem' }}>
+            <button
+              style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer' }}
+              onClick={() => setShowCredentials(false)}
+            >
+              ← Back
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1 style={{ color: 'green', fontWeight: 'bold' }}>Personal banking app</h1>
+          <button onClick={handleLogin}>Login</button>
+        </>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
